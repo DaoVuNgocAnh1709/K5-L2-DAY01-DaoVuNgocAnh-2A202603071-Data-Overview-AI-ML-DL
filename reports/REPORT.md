@@ -1,16 +1,16 @@
 # Báo cáo bài thực hành Ngày 1 – Đọc prediction YOLO11 để hiểu định dạng nhãn
 
-**Ngày chạy:**
+**Ngày chạy:** 6/11/2026
 
-**Runtime Colab:** CPU/GPU
+**Runtime Colab:** GPU (T4)
 
-**Python / PyTorch / Ultralytics:**
+**Python / PyTorch / Ultralytics:** Python: 3.13.18, PyTorch: 2.11.0+cu130, Ultralytics: 8.4.145
 
 **Checkpoint:** `yolo11n-cls.pt`, `yolo11n.pt`, `yolo11n-seg.pt`
 
-**Ngưỡng detection/segmentation dùng khi tạo JSON:** `0.35` (chỉ đổi nếu GV cho phép; nếu đổi hãy ghi rõ)
+**Ngưỡng detection/segmentation dùng khi tạo JSON:** `0.35` 
 
-**Thay đổi so với notebook nguồn:** Không / mô tả rõ thay đổi
+**Thay đổi so với notebook nguồn:** Không
 
 > **Cách dùng mẫu này:** copy/điền trên máy, lưu thành `REPORT.md`, rồi **upload** vào panel Files
 > của Colab (notebook không tự tạo file này). Ô cuối Colab sẽ đóng ZIP cùng `day1_lab_outputs/`.
@@ -37,10 +37,10 @@
 **Mở file:** `day1_lab_outputs/classification_predictions.json` và `visuals/classification_top5.png`.  
 Chỉ dùng ảnh `sample_id = traffic`, lấy dòng `rank = 1`.
 
-1. Chép record hạng 1: `class_id`=… ; `class_name`=… ; `rank`=1 ; `score`=… ; `taxonomy_name`=…
-2. Record này nói về **cả bức ảnh** hay về **một vật thể riêng** trong ảnh? Vì sao bạn nghĩ vậy?
-3. Danh sách tên lớp (class list) do đâu mà có: model tự nghĩ ra, hay đi kèm taxonomy/checkpoint?
-4. Vì sao cần ghi cả `class_id`, `class_name` và `taxonomy_name`, không chỉ ghi mỗi tên lớp?
+1. Chép record hạng 1: `class_id`= 468 ; `class_name`= cab ; `rank`=1 ; `score`= 0.510915 ; `taxonomy_name`= ImageNet-1K
+2. Phạm vi của record: Record này nói về cả bức ảnh. Lý do: Bài toán Image Classification gán một nhãn cho toàn bộ khung hình, không định vị tọa độ của từng vật thể riêng biệt.
+3. Danh sách tên lớp (class list) do đâu mà có: Danh sách lớp đi kèm theo taxonomy ImageNet-1K của checkpoint yolo11n-cls.pt, mô hình không tự nghĩ ra tên lớp.
+4. Lý do cần ghi đủ id, name và taxonomy: Tránh nhầm lẫn, vì cùng một tên lớp có thể có ID khác nhau ở các taxonomy khác nhau (vd: COCO vs ImageNet vs Pascal VOC), và tên lớp có thể bị trùng hoặc đa nghĩa.
 5. Nếu trong ảnh có nhiều vật / nhiều chủ đề, guideline cần nói rõ điều gì để người gán nhãn chọn **một** lớp?
 6. Vì sao không được lấy `score` của model làm ground truth?
 
